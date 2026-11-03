@@ -19,8 +19,27 @@ public class ContractService {
 
     public void processContract(Contract contract, Integer months){
 
-        contract.getInstallment().add(new Installment(LocalDate.of(2018, 7, 25), 206.04));
-        contract.getInstallment().add(new Installment(LocalDate.of(2018, 8, 25), 208.88));
+
+    double basicQuota = contract.getTotalValue() / months;
+        for (int i = 1; i<= months; i++){
+
+            LocalDate dueDate = contract.getDate().plusMonths(i);
+            double interest = payService.interest(basicQuota, i);
+            double fee = payService.paymentFee(basicQuota + interest);
+            double quota = basicQuota + interest + fee;
+
+            contract.getInstallment().add(new Installment(dueDate, quota));
+
+
+
+
+
+
+        
+
+
+
+        }
 
         
 
